@@ -90,7 +90,6 @@ export default class Avatar extends Component {
         isRequire: React.PropTypes.bool,
         placeholder: React.PropTypes.number,
         onChange: React.PropTypes.func, // called on change when interactive is true
-        onChangeFailed: React.PropTypes.func, // called on change failure when interactive is true
         onPress: React.PropTypes.func,
         overlayColor: React.PropTypes.string, // On android only, should be the same than the backgroundColor of the surrounding View
         pickerOptions: React.PropTypes.object, // TODO: Define better
@@ -169,14 +168,10 @@ export default class Avatar extends Component {
                     this.setState({
                         failed: true,
                     });
-                    if (this.props.onChangeFailed) {
-                        this.props.onChangeFailed();
-                    }
                 } else if (response.didCancel) {
                     this.setState({
                         failed: false,
                     });
-                    // Do something on cancel ?
                 } else {
                     const source = response;
 
@@ -185,9 +180,10 @@ export default class Avatar extends Component {
                         source,
                         failed: false,
                     });
-                    if (this.props.onChange) {
-                        this.props.onChange(response);
-                    }
+                }
+                
+                if (this.props.onChange) {
+                    this.props.onChange(response)
                 }
             }
         );
